@@ -52,12 +52,19 @@ export default function Dashboard({ navigation }) {
             backgroundColor: theme === 'light' ? '#F5F5F5' : '#121212',
             justifyContent: 'center',
             alignItems: 'center',
-            paddingHorizontal: 20,
+            paddingHorizontal: 10,
+            marginTop: 60,
         },
         title: {
             fontSize: 24,
             marginBottom: 20,
+            marginLeft: 10,
             fontWeight: 'bold',
+            alignSelf: 'flex-start',
+
+        },
+        bottomSection: {
+            marginTop: 20,
         },
     });
     return (
@@ -78,18 +85,21 @@ export default function Dashboard({ navigation }) {
                     />
                 )}
             />
-            <LogoutButton navigation={navigation} />
-            <AddDeviceButton navigation={navigation} />
+            <View style={styles.bottomSection}>
+
+                <LogoutButton navigation={navigation} />
+                <AddDeviceButton navigation={navigation} />
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", minWidth: '90%' }}>
+                    <Text style={styles.text}>Alterar tema</Text>
+                    <ThemeSwitch />
+                </View>
+            </View>
             <EditDeviceModal
                 isVisible={isModalVisible}
                 device={selectedDevice}
                 onClose={closeModal}
                 onUpdate={fetchDevices}
             />
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", minWidth: '90%' }}>
-                <Text style={styles.text}>Alterar tema</Text>
-                <ThemeSwitch />
-            </View>
         </SafeAreaView>
     )
 }

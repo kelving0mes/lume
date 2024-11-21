@@ -10,7 +10,7 @@ export default function AddDeviceButton({ navigation }) {
     button: {
       width: 60,
       height: 60,
-      backgroundColor: theme === 'light' ? '#00796B' : '#004d40',
+      backgroundColor: theme === 'light' ? '#00796B' : '#B2DFDB',
       borderRadius: 30,
       justifyContent: 'center',
       alignItems: 'center',
@@ -25,7 +25,7 @@ export default function AddDeviceButton({ navigation }) {
       style={styles.button}
       onPress={() => navigation.navigate(NewDevice)}
     >
-      <Ionicons name="add" size={30} color="white" />
+      <Ionicons name="add" size={30} color={"white"} />
     </TouchableOpacity>
   );
 }
