@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.15.104:8080/rotina';
-//const API_URL = 'https://wb-gs-lumi.azurewebsites.net/rotina';
+//const API_URL = 'http://{SEU_IP_LOCAL}:8080/rotina'; --Para rodar de forma local
+const API_URL = 'https://wb-gs-lumi.azurewebsites.net/rotina';
 
 export const getRoutines = async () => {
   try {

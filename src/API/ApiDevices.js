@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Alert } from 'react-native';
 
-const API_URL = 'http://192.168.15.104:8080/dispositivo';
-//const API_URL = 'https://wb-gs-lumi.azurewebsites.net/dispositivo';
+//const API_URL = 'http://{SEU_IP_LOCAL}:8080/dispositivo'; --Para rodar de forma local
+const API_URL = 'https://wb-gs-lumi.azurewebsites.net/dispositivo';
 
 export const getDevices = async () => {
   try {
