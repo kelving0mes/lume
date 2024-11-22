@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { Text, TextInput, StyleSheet, Alert, SafeAreaView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { addRoutine } from '../API/ApiRoutines';
 import { getDevices } from '../API/ApiDevices'; 
@@ -96,7 +96,7 @@ export default function NewRoutine({ navigation }) {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Adicionar Nova Rotina</Text>
 
       <TextInput
@@ -139,6 +139,6 @@ export default function NewRoutine({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={handleSaveRoutine}>
         <Text style={styles.buttonText}>Adicionar Rotina</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }

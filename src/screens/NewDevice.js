@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
+import { Text, TextInput, StyleSheet, Alert, TouchableOpacity, SafeAreaView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { addDevice } from '../API/ApiDevices'; 
 import { useTheme } from '../hooks/useTheme';
@@ -70,16 +70,14 @@ export default function NewDevice({ navigation }) {
     },
   });
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Adicionar Novo Dispositivo</Text>
-
       <TextInput
         style={styles.input}
         placeholder="Nome do Dispositivo"
         value={deviceName}
         onChangeText={setDeviceName}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Consumo em KW/h"
@@ -87,7 +85,6 @@ export default function NewDevice({ navigation }) {
         value={deviceConsumption}
         onChangeText={setDeviceConsumption}
       />
-
       <RNPickerSelect
         onValueChange={(value) => setDeviceType(value)}
         items={[
@@ -103,6 +100,6 @@ export default function NewDevice({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={handleAddDevice}>
         <Text style={styles.buttonText}>Adicionar Dispositivo</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }

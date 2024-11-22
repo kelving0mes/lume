@@ -94,14 +94,11 @@ export default function Dashboard({ navigation }) {
                     />
                 )}
             />
-
-
             <View style={styles.bottomSection}>
                 <ThemeSwitch />
                 <LogoutButton navigation={navigation} />
             </View>
             <AddDeviceButton navigation={navigation} />
-
             <EditDeviceModal
                 isVisible={isModalVisible}
                 device={selectedDevice}

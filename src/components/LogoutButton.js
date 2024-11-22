@@ -2,12 +2,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getAuth, signOut } from 'firebase/auth';
 import { firebaseApp } from '../services/FirebaseConfig'
 import Login from '../screens/Login';
-import { useTheme } from '../hooks/useTheme';
 
 const auth = getAuth(firebaseApp);
 
 export default function LogoutButton({ navigation }) {
-  const {theme} = useTheme()
   const handleLogout = async () => {
     try {
       await signOut(auth);
@@ -17,22 +15,6 @@ export default function LogoutButton({ navigation }) {
     }
   };
 
-  const styles = StyleSheet.create({
-    button: {
-      backgroundColor: '#00796B',
-      paddingVertical: 10,
-      paddingHorizontal: 20,
-      borderRadius: 5,
-      minWidth : 100,
-      alignItems: 'center',
-    },
-    buttonText: {
-      color: '#fff',
-      fontSize: 18,
-      fontWeight: 'bold',
-    },
-  });
-
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
@@ -41,4 +23,20 @@ export default function LogoutButton({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#00796B',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    minWidth : 100,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});
 

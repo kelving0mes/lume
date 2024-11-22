@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Modal, Alert, TouchableOpacity } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Modal, Alert, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { updateDevice } from '../API/ApiDevices';
 import { useTheme } from '../hooks/useTheme';

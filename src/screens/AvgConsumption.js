@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert, StatusBar } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Alert, StatusBar, SafeAreaView } from 'react-native';
 import { getDevices } from '../API/ApiDevices';
 import { useTheme } from '../hooks/useTheme';
 import { useFocusEffect } from '@react-navigation/native';
@@ -79,7 +79,7 @@ export default function AvgConsumption() {
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar barStyle={theme === 'light' ? 'dark-content' : 'light-content'} backgroundColor={theme === 'light' ? '#F5F5F5' : '#1B1A26'} />
       <Text style={styles.title}>Consumo de Energia</Text>
       <Text style={styles.avgText}>Total de Consumo: {totalConsumption} KW/h</Text>
@@ -94,6 +94,6 @@ export default function AvgConsumption() {
           </View>
         )}
       />
-    </View>
+    </SafeAreaView>
   );
 }
