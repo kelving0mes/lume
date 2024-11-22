@@ -10,7 +10,7 @@ export default function AddDeviceButton({ navigation }) {
     button: {
       width: 60,
       height: 60,
-      backgroundColor: theme === 'light' ? '#00796B' : '#B2DFDB',
+      backgroundColor: '#00796B',
       borderRadius: 30,
       justifyContent: 'center',
       alignItems: 'center',

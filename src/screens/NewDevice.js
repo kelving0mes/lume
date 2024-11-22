@@ -1,28 +1,74 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../services/FirebaseConfig';
+import { addDevice } from '../API/ApiDevices'; 
+import { useTheme } from '../hooks/useTheme';
 
 export default function NewDevice({ navigation }) {
+  const {theme} = useTheme();
   const [deviceName, setDeviceName] = useState('');
   const [deviceConsumption, setDeviceConsumption] = useState('');
   const [deviceType, setDeviceType] = useState('');
 
   const handleAddDevice = async () => {
+    if (!deviceName || !deviceConsumption || !deviceType) {
+      Alert.alert("Todos os campos são obrigatórios!");
+      return;
+    }
+
+    const deviceData = {
+      nome: deviceName,
+      consumoMedio: parseFloat(deviceConsumption),
+      tipo: deviceType,
+      dataInstalacao: new Date().toISOString(),
+    };
+
     try {
-      await addDoc(collection(db, 'devices'), {
-        name: deviceName,
-        consumption: deviceConsumption,
-        type: deviceType,
-      });
-      Alert.alert("Dispositivo adicionado com sucesso");
+      await addDevice(deviceData);
+      Alert.alert("Dispositivo adicionado com sucesso!");
       navigation.goBack();
     } catch (e) {
-      Alert.alert("Erro ao adicionar dispositivo: ", error.message);
+      Alert.alert("Erro ao adicionar dispositivo", e.message);
     }
   };
-
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme === 'light' ? '#F5F5F5' : '#372f36',
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+    },
+    title: {
+      textAlign: 'center',
+      color: theme === 'light' ? '#424242' : '#FFFFFF',
+      fontSize: 24,
+      marginBottom: 20,
+      fontWeight: 'bold',
+    },
+    input: {
+      width: '100%',
+      height: 40,
+      borderColor: '#ccc',
+      borderWidth: 1,
+      marginBottom: 15,
+      paddingLeft: 10,
+      backgroundColor: theme === 'light' ? '#fff' : '#fff',
+      color: theme === 'light' ? '#333' : '#000',
+    },
+    button: {
+      marginTop: 20,
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      backgroundColor: '#00796B',
+    },
+    buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+  });
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Adicionar Novo Dispositivo</Text>
@@ -53,31 +99,10 @@ export default function NewDevice({ navigation }) {
           label: 'Selecione o tipo de dispositivo',
           value: null,
         }}
-        
       />
-      <Button title="Adicionar Dispositivo" onPress={handleAddDevice} />
+      <TouchableOpacity style={styles.button} onPress={handleAddDevice}>
+        <Text style={styles.buttonText}>Adicionar Dispositivo</Text>
+      </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 20,
-    fontWeight: 'bold',
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 10,
-  },
-});

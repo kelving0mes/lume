@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { firebaseApp } from '../services/FirebaseConfig';
 import TabNavigation from '../routes/tabs.routes';
@@ -32,6 +32,7 @@ export default function Login({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor= '#00796B'/>
       <View style={styles.logoContainer}>
         <Image source={require('../../assets/Lume_logo.png')} style={styles.logo} />
         <Text style={styles.subtitleText}>Eficiência na ponta dos seus dedos</Text>

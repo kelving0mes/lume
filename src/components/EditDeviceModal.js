@@ -1,35 +1,96 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Modal, Alert } from 'react-native';
-import { updateDoc, doc } from 'firebase/firestore';
-import { db } from '../services/FirebaseConfig';
+import { View, TextInput, Button, StyleSheet, Text, Modal, Alert, TouchableOpacity } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
+import { updateDevice } from '../API/ApiDevices';
+import { useTheme } from '../hooks/useTheme';
 
 export default function EditDeviceModal({ isVisible, device, onClose, onUpdate }) {
+  const { theme } = useTheme();
   const [updatedName, setUpdatedName] = useState('');
   const [updatedConsumption, setUpdatedConsumption] = useState('');
   const [updatedType, setUpdatedType] = useState('');
 
   useEffect(() => {
     if (device) {
-      setUpdatedName(device.name);
-      setUpdatedConsumption(device.consumption);
-      setUpdatedType(device.type);
+      setUpdatedName(device.nome);
+      setUpdatedConsumption(device.consumoMedio.toString());
+      setUpdatedType(device.tipo);
     }
   }, [device]);
 
   const handleUpdate = async () => {
+    if (!updatedName || !updatedConsumption || !updatedType) {
+      Alert.alert("Todos os campos são obrigatórios!");
+      return;
+    }
+
+    const updatedDevice = {
+      nome: updatedName,
+      consumoMedio: parseFloat(updatedConsumption),
+      tipo: updatedType,
+    };
+
     try {
-      const deviceRef = doc(db, 'devices', device.id);
-      await updateDoc(deviceRef, {
-        name: updatedName,
-        consumption: updatedConsumption,
-        type: updatedType,
-      });
+      await updateDevice(device.id, updatedDevice);
       onUpdate();
       onClose();
     } catch (error) {
       Alert.alert("Erro ao atualizar dispositivo: ", error.message);
     }
   };
+
+  const styles = StyleSheet.create({
+    modalOverlay: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+      backgroundColor: theme === 'light' ? '#fff' : '#333',
+      padding: 20,
+      borderRadius: 8,
+      width: '80%',
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 15,
+      color: theme === 'light' ? '#333' : '#fff',
+    },
+    input: {
+      height: 40,
+      borderColor: '#ccc',
+      borderWidth: 1,
+      marginBottom: 15,
+      paddingLeft: 8,
+      borderRadius: 5,
+      backgroundColor: theme === 'light' ? '#fff' : '#fff',
+      color: theme === 'light' ? '#333' : '#000',
+    },
+    modalButtons: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 20,
+    },
+    button: {
+      paddingVertical: 10,
+      paddingHorizontal: 20,
+      borderRadius: 5,
+      width: '45%',
+    },
+    saveButton: {
+      backgroundColor: '#00796B',
+    },
+    cancelButton: {
+      backgroundColor: '#FF5252',
+    },
+    buttonText: {
+      color: '#fff',
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+  });
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent={true} onRequestClose={onClose}>
@@ -52,9 +113,27 @@ export default function EditDeviceModal({ isVisible, device, onClose, onUpdate }
             onChangeText={setUpdatedConsumption}
           />
 
+          <RNPickerSelect
+            onValueChange={(value) => setUpdatedType(value)}
+            items={[
+              { label: 'Iluminação', value: 'lamp' },
+              { label: 'Eletrodoméstico', value: 'washing_machine' },
+              { label: 'Eletroeletrônico', value: 'television' },
+            ]}
+            value={updatedType}
+            placeholder={{
+              label: 'Selecione o tipo de dispositivo',
+              value: null,
+            }}
+          />
+
           <View style={styles.modalButtons}>
-            <Button title="Cancelar" onPress={onClose} />
-            <Button title="Salvar" onPress={handleUpdate} />
+            <TouchableOpacity style={[styles.button, styles.cancelButton]} onPress={onClose}>
+              <Text style={styles.buttonText}>Cancelar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleUpdate}>
+              <Text style={styles.buttonText}>Salvar</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -62,34 +141,3 @@ export default function EditDeviceModal({ isVisible, device, onClose, onUpdate }
   );
 };
 
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '80%',
-    padding: 20,
-    backgroundColor: 'white',
-    borderRadius: 8,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 15,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingLeft: 10,
-  },
-  modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-});

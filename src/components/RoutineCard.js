@@ -3,26 +3,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import { useTheme } from '../hooks/useTheme';
 
-const getDeviceIcon = (type) => {
-  switch (type) {
-    case 'lamp':
-      return 'lamp-outline';
-    case 'washing_machine':
-      return 'washing-machine';
-    case 'television':
-      return 'television-classic';
-    default:
-      return 'devices';
-  }
-};
-
-export default function DeviceCard({ id, name, consumption, type, onDelete, onEdit }) {
+export default function RoutineCard({ id, name, description, startTime, endTime, device, onDelete, onEdit }) {
   const { theme } = useTheme();
-
+  
   const styles = StyleSheet.create({
     card: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'space-between',
       backgroundColor: theme === 'light' ? '#B2DFDB' : '#00796B',
       borderRadius: 8,
@@ -35,20 +22,27 @@ export default function DeviceCard({ id, name, consumption, type, onDelete, onEd
       marginRight: 15,
     },
     cardContent: {
+      flex: 1,
       flexDirection: 'column',
+      justifyContent: 'center',
     },
-    deviceName: {
+    routineName: {
       color: theme === 'light' ? '#333' : '#F5F5F5',
       fontSize: 18,
       fontWeight: 'bold',
+      flexWrap: 'wrap',
+      overflow: 'hidden',
+      width: '80%',
     },
-    deviceDetails: {
+    routineDetails: {
       color: theme === 'light' ? '#333' : '#F5F5F5',
       fontSize: 14,
     },
     buttonContainer: {
-      maxWidth: 50,
-      marginLeft: 'auto',
+      flexDirection: 'column', 
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: 10,
     },
     editButton: {
       backgroundColor: theme === 'light' ? '#f5f5f5' : '#bdbdbd',
@@ -69,14 +63,17 @@ export default function DeviceCard({ id, name, consumption, type, onDelete, onEd
   return (
     <View style={styles.card}>
       <MaterialCommunityIcons
-        name={getDeviceIcon(type)}
+        name="clock-time-four-outline"
         size={40}
         color={theme === 'light' ? '#333' : '#F5F5F5'}
         style={styles.icon}
       />
       <View style={styles.cardContent}>
-        <Text style={styles.deviceName}>{name}</Text>
-        <Text style={styles.deviceDetails}>Consumo: {consumption} KW/h</Text>
+        <Text style={styles.routineName} numberOfLines={1}>{name}</Text>
+        <Text style={styles.routineDetails}>Descrição: {description}</Text>
+        <Text style={styles.routineDetails}>Início: {startTime}</Text>
+        <Text style={styles.routineDetails}>Fim: {endTime}</Text>
+        {device && <Text style={styles.routineDetails}>Dispositivo: {device}</Text>}
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.editButton} onPress={() => onEdit(id)}>

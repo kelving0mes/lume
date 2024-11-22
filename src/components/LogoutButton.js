@@ -19,14 +19,17 @@ export default function LogoutButton({ navigation }) {
 
   const styles = StyleSheet.create({
     button: {
-      backgroundColor: theme === 'light' ? '#00796B' : '#B2DFDB',
+      backgroundColor: '#00796B',
       paddingVertical: 10,
       paddingHorizontal: 20,
       borderRadius: 5,
+      minWidth : 100,
+      alignItems: 'center',
     },
     buttonText: {
-      color: theme === 'light' ? '#FFFFFF' : '#121212',
+      color: '#fff',
       fontSize: 18,
+      fontWeight: 'bold',
     },
   });
 
